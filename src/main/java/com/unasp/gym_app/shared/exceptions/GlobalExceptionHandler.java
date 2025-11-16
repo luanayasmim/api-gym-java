@@ -1,7 +1,9 @@
 package com.unasp.gym_app.shared.exceptions;
 
-import com.unasp.gym_app.shared.dtos.ErrorResponse;
-import jakarta.servlet.http.HttpServletRequest;
+import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -12,9 +14,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
+
+import com.unasp.gym_app.shared.dtos.ErrorResponse;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @ControllerAdvice public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(DuplicateEmailException.class)
@@ -41,7 +44,8 @@ import java.util.stream.Collectors;
                 .timestamp(OffsetDateTime.now())
                 .status(HttpStatus.NOT_FOUND.value())
                 .error(HttpStatus.NOT_FOUND.getReasonPhrase())
-                .message(ex.getMessage())
+                // .message(ex.getMessage())
+                .message("An unexpected error occurred")
                 .path(request.getRequestURI())
                 .build();
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
